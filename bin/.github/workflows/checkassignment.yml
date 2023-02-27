@@ -1,0 +1,39 @@
+name: Check assignment code
+
+on:
+  push:
+    tags:
+      - 'handin[0-9]+'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v3
+      - name: Set up JDK 17
+        uses: actions/setup-java@v3
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+          cache: maven
+      - name: Compile with Maven
+        run: mvn --batch-mode --update-snapshots compile
+      - name: Test Storage
+        run: mvn --batch-mode --update-snapshots test -Dtest=TestStorage
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test1ConnectDisconnect
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test2Reconnect
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test3MultipleConnections
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test4CreateDelete
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test5Subscribe
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test6Publish
+      - name: Test with Maven
+        run: mvn --batch-mode --update-snapshots test -Dtest=Test7MultiPublish
+      - name: Test IoT System
+        run: mvn --batch-mode --update-snapshots test -Dtest=TestIoTSystem
